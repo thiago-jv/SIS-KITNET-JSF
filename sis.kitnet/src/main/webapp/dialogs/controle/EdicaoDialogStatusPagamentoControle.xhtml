@@ -1,0 +1,51 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog widgetVar="widgetVarDialogEdicaoControle" modal="true"
+		id="idDialogEdicaoControle" appendTo="@(body)" resizable="false"
+		draggable="false" width="50%">
+
+		<f:facet name="header">
+			<h:outputText value="#{msg['edicaoControle']}" />
+		</f:facet>
+
+		<h:form id="formEdicaoControle" width="80%">
+
+			<fieldset>
+				<p:panelGrid columns="2" id="painel" style="margin-top: 20px"
+					styleClass="rotulo, campo">
+
+					<p:outputLabel
+						value="#{msg['sis.kitnet.controle.statusProximoPagamento']}:"
+						for="status" />
+					<p:selectOneMenu id="status"
+						value="#{controlePesquisaController.controle.statusProximoPagamento}">
+						<f:selectItems
+							value="#{controlePesquisaController.controle.statusProximoPagamentos()}" />
+						<f:validateBean />
+					</p:selectOneMenu>
+
+
+					<f:facet name="footer">
+						<h:panelGroup style="text-align:lefth">
+
+							<p:commandButton value="#{msg['sim']}" process="@form"
+								oncomplete="PF('widgetVarDialogEdicaoControle').hide();"
+								action="#{controlePesquisaController.atualizarStatusPagamento()}">
+							</p:commandButton>
+
+							<p:commandButton value="#{msg['nao']}"
+								oncomplete="PF('widgetVarDialogEdicaoControle').hide(); return false;" />
+						</h:panelGroup>
+					</f:facet>
+
+				</p:panelGrid>
+
+			</fieldset>
+
+		</h:form>
+	</p:dialog>
+</ui:composition>

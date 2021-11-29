@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog widgetVar="widgetVarDialogEdicaoApartamento" modal="true"
+		id="idDialogEdicaoApartamento" appendTo="@(body)" resizable="false"
+		draggable="false" width="50%">
+
+		<f:facet name="header">
+			<h:outputText value="#{msg['edicaoApartamento']}" />
+		</f:facet>
+
+		<h:form id="formEdicaoApartamento" width="80%">
+
+			<fieldset>
+				<p:panelGrid columns="2" id="painel" style="margin-top: 20px"
+					styleClass="rotulo, campo">
+					
+					<p:outputLabel value="#{msg['sis.kitnet.apartamento.numero']}:"
+						for="numero" />
+					<p:inputText id="numero"
+						value="#{apartamentoPesquisaController.apartamento.numero}"
+						maxlength="10">
+						<f:validateBean />
+					</p:inputText>
+
+					<p:outputLabel value="#{msg['sis.kitnet.apartamento.descricao']}:"
+						for="descricao" />
+					<p:inputText id="descricao"
+						value="#{apartamentoPesquisaController.apartamento.descricao}"
+						maxlength="10">
+						<f:validateBean />
+					</p:inputText>
+
+					<p:outputLabel value="#{msg['sis.kitnet.apartamento.medidor']}:"
+						for="medidor" />
+					<p:inputText id="medidor"
+						value="#{apartamentoPesquisaController.apartamento.medidor}"
+						maxlength="10">
+						<f:validateBean />
+					</p:inputText>
+
+					<p:outputLabel value="#{msg['sis.kitnet.apartamento.status']}:"
+						for="status" />
+					<p:selectOneMenu id="status"
+						value="#{apartamentoPesquisaController.apartamento.statusApartamento}">
+						<f:selectItems
+							value="#{apartamentoPesquisaController.apartamento.statusApartamentos()}" />
+						<f:validateBean />
+					</p:selectOneMenu>
+
+<!-- 
+					<p:outputLabel value="#{msg['predio']}:" for="predio" />
+					<p:selectOneMenu id="predio"
+						value="#{apartamentoPesquisaController.apartamento.predio}">
+						<f:selectItems
+							value="#{apartamentoPesquisaController.listarPredios()}"
+							var="predio" itemValue="#{predio}" itemLabel="#{predio.numero}" />
+						<f:validateBean />
+					</p:selectOneMenu>
+					
+-->
+					<f:facet name="footer">
+						<h:panelGroup style="text-align:lefth">
+
+							<p:commandButton value="#{msg['sim']}" process="@form"
+								oncomplete="PF('widgetVarDialogEdicaoApartamento').hide();"
+								action="#{apartamentoPesquisaController.atualizar()}">
+							</p:commandButton>
+
+							<p:commandButton value="#{msg['nao']}"
+								oncomplete="PF('widgetVarDialogEdicaoApartamento').hide(); return false;" />
+						</h:panelGroup>
+					</f:facet>
+
+				</p:panelGrid>
+
+			</fieldset>
+
+		</h:form>
+	</p:dialog>
+</ui:composition>

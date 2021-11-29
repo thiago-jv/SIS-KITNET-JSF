@@ -1,0 +1,127 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" >
+
+	<ui:define name="titulo">#{msg['pesquisaDeValores']}</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa" target="_blank">
+
+			<h1>#{msg['pesquisaDeValores']}</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+
+				<p:toolbarGroup>
+					<p:commandButton value="#{msg['pesquisar']}"
+						icon="ui-icon-circle-zoomout" update="valorTable" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="#{msg['novo']}" outcome="/valor/novoValor"
+						icon="ui-icon-plusthick" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<fieldset>
+				<p:focus context="painel" />
+				<p:panelGrid columns="2" id="painel" layout="grid"
+					style="margin-top: 20px" columnClasses="ui-grid-col-2"
+					styleClass="rotulo, campo">
+
+					<p:outputLabel value="#{msg['valor']}" for="valor" />
+					<p:inputText id="valor"
+						value="#{valorPesquisaController.filtro.valor}" maxlength="10" styleClass="moeda">
+						<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+					</p:inputText>
+
+				</p:panelGrid>
+			</fieldset>
+
+			<fieldset>
+				<p:dataTable id="valorTable" var="valor" lazy="true"
+					style="margin-top: 20px"
+					value="#{valorPesquisaController.model}"
+					emptyMessage="Nenhum dado encontrado." paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
+                            {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,20,30" paginator="true" scrollable="true"
+					rows="10">
+
+					<f:facet name="footer">
+						<div align="right">Foram encontrados
+							#{valorPesquisaController.qtdRegistros()} Registros.</div>
+					</f:facet>
+
+					<p:column headerText="Id">
+						<h:outputText value="#{valor.id}" />
+					</p:column>
+
+					<p:column headerText="Valor">
+						<h:outputText value="#{valor.valor}" styleClass="moeda">
+						<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column headerText="Valor Extenso">
+						<h:outputText value="#{valor.valorExtenso}"/>
+					</p:column>
+
+					<p:column>
+
+						<p:commandButton icon="ui-icon-pencil" title="#{msg['editar']}"
+							update=":frmPesquisa:formEdicaoValor:painel :frmPesquisa:idDialogEdicaoValor :frmPesquisa:formEdicaoValor"
+							oncomplete="PF('widgetVarDialogEdicaoValor').show();">
+							<f:setPropertyActionListener value="#{valor}"
+								target="#{valorPesquisaController.valor}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash" title="#{msg['excluir']}"
+							oncomplete="PF('confirmacaoExclusao').show()" process="@this"
+							update=":frmPesquisa:confirmacaoExclusaoDialog">
+							<f:setPropertyActionListener
+								target="#{valorPesquisaController.valor}"
+								value="#{valor}" />
+						</p:commandButton>
+
+					</p:column>
+
+					<p:column style="text-align: center">
+						<p:commandLink ajax="false"
+							action="#{valorPesquisaController.emitirRelatorioDeValores()}"
+							process="@this" update="valorTable" title="Pdf">
+							<f:setPropertyActionListener
+								target="#{valorPesquisaController.id}"
+								value="#{valor.id}" />
+							<h:graphicImage library="images" name="pdf.png" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</fieldset>
+
+			<ui:include src="/dialogs/valor/EdicaoDialogValor.xhtml" />
+
+			<p:confirmDialog header="#{msg['exclusaoValor']}"
+				message="Tem certeza que deseja excluir o valor #{valorPesquisaController.valor.valor}?"
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+
+				<p:commandButton value="#{msg['sim']}"
+					oncomplete="PF('confirmacaoExclusao').hide();"
+					action="#{valorPesquisaController.excluir()}" process="@this"
+					update=":frmPesquisa:valorTable" />
+
+				<p:button value="#{msg['nao']}"
+					onclick="PF('confirmacaoExclusao').hide(); return false;" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

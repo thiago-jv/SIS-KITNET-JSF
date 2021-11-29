@@ -1,0 +1,31 @@
+@charset "utf-8";
+
+body {
+	font-size: 12px;
+	font-family: Arial, Helvetica, sans-serif;
+	margin: 0px;
+	font-weight: normal;
+}
+
+fieldset {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+#painel{
+margin-top: 20px;	
+}
+
+.rodape {
+	width: 100%;
+	color: white;
+	bottom: 0;
+	text-align: center;
+	position: fixed;
+	min-height: 20px;
+	background-color: #c0c0c0;
+}
+
+#usuario-logado{
+	align-items: flex-start;
+}

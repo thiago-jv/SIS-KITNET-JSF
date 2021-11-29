@@ -1,0 +1,112 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="metadata">
+		<f:metadata>
+			<f:viewAction action="#{predioCadastroController.inicializar()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="corpo">
+		
+		<ui:define name="titulo">#{predioCadastroController.predio.editando ? 'Edição predio' : 'Novo predio'}</ui:define>
+
+		<h:form>
+
+			<h1>#{predioCadastroController.predio.editando ? 'Edição predio' : 'Novo predio'}</h1>
+			
+			<p:messages autoUpdate="true" />
+
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+
+					<p:commandButton value="#{msg['salvar']}" icon="ui-icon-plusthick"
+						update="@form" action="#{predioCadastroController.salvar()}"/>
+
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+
+					<p:button value="#{msg['pesquisar']}" outcome="/predio/pesquisaPredio" icon="ui-icon-circle-zoomout" />
+
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+
+			<fieldset>
+
+				<p:focus context="painel" />
+				<p:panelGrid columns="2" id="painel"
+					styleClass="rotulo, campo">
+
+					<p:outputLabel value="#{msg['sis.kitnet.predio.descricao']}:"
+						for="descricao" />
+					<p:inputText id="descricao" maxlength="90"
+						value="#{predioCadastroController.predio.descricao}">
+						<f:validateBean />
+					</p:inputText>
+
+					<p:outputLabel
+						value="#{msg['sis.kitnet.predio.cep']}:"
+						for="cep" />
+					<p:inputText id="cep" maxlength="8"
+						value="#{predioCadastroController.predio.cep}">
+						<f:validateBean />
+					</p:inputText>
+
+
+					<p:outputLabel value="#{msg['sis.kitnet.predio.numero']}:"
+						for="numero" />
+					<p:inputText id="numero" maxlength="10"
+						value="#{predioCadastroController.predio.numero}">
+						<f:validateBean />
+					</p:inputText>
+
+					<p:outputLabel value="#{msg['sis.kitnet.predio.logradouro']}:"
+						for="logradouro" />
+					<p:inputText id="logradouro" maxlength="200"
+						value="#{predioCadastroController.predio.logradouro}">
+						<f:validateBean />
+					</p:inputText>
+
+					<p:outputLabel value="#{msg['sis.kitnet.predio.complemento']}:"
+						for="complemento" />
+					<p:inputText id="complemento" maxlength="90"
+						value="#{predioCadastroController.predio.complemento}">
+						<f:validateBean />
+					</p:inputText>
+					
+					<p:outputLabel value="#{msg['sis.kitnet.predio.bairro']}:"
+						for="bairro" />
+					<p:inputText id="bairro" maxlength="90"
+						value="#{predioCadastroController.predio.bairro}">
+						<f:validateBean />
+					</p:inputText>
+					
+					<p:outputLabel value="#{msg['sis.kitnet.predio.uf']}:"
+						for="uf" />
+					<p:inputText id="uf" maxlength="10"
+						value="#{predioCadastroController.predio.uf}">
+						<f:validateBean />
+					</p:inputText>
+					
+					<p:outputLabel value="#{msg['sis.kitnet.predio.localidade']}:"
+						for="localidade" />
+					<p:inputText id="localidade" maxlength="90"
+						value="#{predioCadastroController.predio.localidade}">
+						<f:validateBean />
+					</p:inputText>
+						
+				</p:panelGrid>
+
+			</fieldset>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,126 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="metadata">
+		<f:metadata>
+			<f:viewParam name="controle"
+				value="#{controleCadastroController.controle}" />
+			<f:viewAction action="#{controleCadastroController.inicializar()}"
+				type="preRenderView" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<ui:define name="titulo">#{controleCadastroController.controle.editando ? 'Edição Controle' : 'Novo Controle'}</ui:define>
+
+		<h:form>
+
+			<h1>#{controleCadastroController.controle.editando ? 'Edição
+				controle' : 'Novo controle'}</h1>
+
+			<p:messages autoUpdate="true" />
+
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+
+					<p:commandButton value="#{msg['salvar']}" icon="ui-icon-plusthick"
+						update="@form" action="#{controleCadastroController.salvar()}" />
+
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+
+					<p:button value="#{msg['pesquisar']}"
+						outcome="/controle/pesquisaControle" icon="ui-icon-circle-zoomout" />
+
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+
+			<p:fieldset legend="Dados Cadastrais">
+
+				<p:panelGrid columns="2" styleClass="rotulo, campo">
+
+					<p:outputLabel value="#{msg['inquilino']}:" for="inquilino" />
+						<h:panelGroup>
+							<p:inputText id="inquilino"
+								readonly="#{facesContext.currentPhaseId.name eq 'RENDER_RESPONSE'}"
+								value="#{controleCadastroController.nomeInquilino}" />
+
+							<p:commandButton icon="ui-icon-search" title="Pesquisar"
+								process="@this" update="@none"
+								action="#{inquilinoPesquisaController.abrirDialogInquilino()}"
+								ignoreAutoUpdate="true">
+								<p:ajax event="dialogReturn"
+									listener="#{controleCadastroController.inquilinoSelecionado}"
+									update="inquilino" ignoreAutoUpdate="true" />
+							</p:commandButton>
+						</h:panelGroup>
+
+					<p:outputLabel value="#{msg['apartamento']}:" for="apartamento" />
+					<p:selectOneMenu id="apartamento" style="width:80%" filter="true"
+						filterText="Filter" filterMatchMode="startsWith"
+						value="#{controleCadastroController.controle.apartamento}">
+						<f:selectItem itemLabel="Selecione o Apartamento" />
+						<f:selectItems
+							value="#{controleCadastroController.listarApartamentos}"
+							var="apartamento" itemValue="#{apartamento}"
+							itemLabel="#{apartamento.numero}" />
+						<f:validateBean />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="#{msg['valor']}:" for="valor" />
+					<p:selectOneMenu id="valor" style="width:80%" filter="true"
+						filterText="Filter" filterMatchMode="startsWith"
+						value="#{controleCadastroController.controle.valor}">
+						<f:selectItems value="#{controleCadastroController.listarValores}"
+							var="valor" itemValue="#{valor}" itemLabel="#{valor.valor}" />
+						<f:validateBean />
+					</p:selectOneMenu>
+
+					<h:outputLabel value="#{msg['sis.kitnet.controle.dataEntrada']}:"
+						for="dataEntrada" />
+					<p:calendar mask="99/99/9999" id="dataEntrada"
+						value="#{controleCadastroController.controle.dataEntrada}"
+						pattern="dd/MM/yyyy">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<f:validateBean />
+					</p:calendar>
+
+					<h:outputLabel
+						value="#{msg['sis.kitnet.controle.dataProximoPagamento']}:"
+						for="dataProximoPagamento" />
+					<p:calendar mask="99/99/9999" id="dataProximoPagamento"
+						value="#{controleCadastroController.controle.dataPagamento}"
+						pattern="dd/MM/yyyy">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+						<f:validateBean />
+					</p:calendar>
+
+					<p:outputLabel value="#{msg['sis.kitnet.controle.observacao']}:"
+						for="observacao" />
+					<p:inputTextarea id="observacao"
+						value="#{controleCadastroController.controle.observacao}">
+					</p:inputTextarea>
+					
+					<p:outputLabel value="#{msg['sis.kitnet.controle.status']}:"
+						for="status" />
+					<p:inputText id="status" disabled="true"
+						value="#{controleCadastroController.controle.statusControle}">
+					</p:inputText>
+
+				</p:panelGrid>
+
+			</p:fieldset>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

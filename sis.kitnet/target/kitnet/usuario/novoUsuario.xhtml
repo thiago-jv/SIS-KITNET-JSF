@@ -1,0 +1,133 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="metadata">
+		<f:metadata>
+		<f:viewParam name="usuario"
+				value="#{usuarioCadastroBean.usuario}" />
+			<f:viewAction action="#{usuarioCadastroBean.inicializar()}" />
+		</f:metadata>
+	</ui:define>
+
+	<ui:define name="corpo">
+
+		<ui:define name="titulo">#{usuarioCadastroBean.usuario.editando ? 'Edição Usuário' : 'Novo Usuário'}</ui:define>
+
+		<h:form>
+
+			<h1>#{usuarioCadastroBean.usuario.editando ? 'Edição Usuário' :
+				'Novo Usuário'}</h1>
+
+			<p:messages autoUpdate="true" />
+
+			<p:toolbar style="margin-top: 20px;">
+				<p:toolbarGroup>
+
+					<p:commandButton value="#{msg['salvar']}" icon="ui-icon-plusthick"
+						update="@form" action="#{usuarioCadastroBean.salvar()}"
+						rendered="#{usuarioCadastroBean.usuario.id == null}" />
+
+					<p:commandButton value="#{msg['salvar']}" icon="ui-icon-plusthick"
+						update="@form" action="#{usuarioCadastroBean.atualizar()}"
+						rendered="#{usuarioCadastroBean.usuario.id != null}" />
+
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+
+					<p:button value="#{msg['pesquisar']}"
+						outcome="/usuario/pesquisaUsuario" icon="ui-icon-circle-zoomout" />
+
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+
+			<fieldset>
+
+				<p:focus context="painel" />
+				<p:panelGrid columns="2" id="painel" styleClass="rotulo, campo">
+
+					<p:outputLabel value="#{msg['sis.kitnet.inquilino.nome']}:"
+						for="nome" />
+					<p:inputText id="nome" maxlength="90"
+						value="#{usuarioCadastroBean.usuario.apelido}">
+						<f:validateBean />
+					</p:inputText>
+
+					<h:outputLabel value="Senha * :" for="senha"
+						rendered="#{usuarioCadastroBean.usuario.id == null}" />
+					<p:password id="senha"
+						rendered="#{usuarioCadastroBean.usuario.id == null}"
+						value="#{usuarioCadastroBean.usuario.senha}" inline="true"
+						required="true" redisplay="true" autocomplete="off"
+						promptLabel="Digite uma senha segura." goodLabel="Boa"
+						weakLabel="Razoavel" strongLabel="Excelente" feedback="true"
+						requiredMessage="Senha: Campo Obrigatório" maxlength="20"
+						title="E permitido no minimo 5 maximo 20 caracteres."
+						validatorMessage="E permitido no minimo 5 maximo 20 caracteres.">
+						<f:validateLength minimum="5" maximum="20" />
+					</p:password>
+
+					<p:outputLabel value="Confirme a senha * :" for="confirma"
+						rendered="#{usuarioCadastroBean.usuario.id == null}" />
+					<p:password id="confirma"
+						rendered="#{usuarioCadastroBean.usuario.id == null}"
+						value="#{usuarioCadastroBean.usuario.verificaSenhaTransient}"
+						redisplay="true" required="true" autocomplete="off" maxlength="20"
+						requiredMessage="Confirme a senha: Campo Obrigatório"
+						title="E permitido no minimo 5 maximo 20 caracteres."
+						validatorMessage="E permitido no minimo 5 maximo 15 caracteres.">
+					</p:password>
+
+					<p:outputLabel value="Grupo * :" for="grupo" />
+					<p:selectOneMenu value="#{usuarioCadastroBean.idGrupo}" id="grupo"
+						required="true" requiredMessage="Grupo: Campo Obrigatório">
+						<f:selectItems value="#{usuarioCadastroBean.listaGrupos}" var="g"
+							itemLabel="#{g.descricao}" itemValue="#{g.id}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="Adicionar" />
+					<p:commandButton icon="ui-icon-circle-plus"
+						action="#{usuarioCadastroBean.adicionarGrupo()}"
+						process="@this grupo" update="tabelaGrupos" />
+
+				</p:panelGrid>
+
+			</fieldset>
+
+			<fieldset>
+				<p:dataTable value="#{usuarioCadastroBean.usuarioGrupos()}"
+					var="grupo" id="tabelaGrupos" style="margin-top: 20px"
+					reflow="true" emptyMessage="Nenhum resultado encontrado!">
+
+					<f:facet name="footer">
+						<div align="right">Foram encontrados
+							#{usuarioCadastroBean.qtdGrupos()} Registros.</div>
+					</f:facet>
+
+					<p:column headerText="Grupos">
+						<p:outputLabel value="#{grupo.nome}" />
+					</p:column>
+
+					<p:column>
+						<p:commandButton icon="ui-icon-trash" title="Excluir"
+							action="#{usuarioCadastroBean.removerGrupoUsuario(grupo)}"
+							process="@this" update="tabelaGrupos">
+						</p:commandButton>
+					</p:column>
+
+				</p:dataTable>
+			</fieldset>
+
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

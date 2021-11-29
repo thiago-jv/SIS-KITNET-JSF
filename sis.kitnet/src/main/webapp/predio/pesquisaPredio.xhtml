@@ -1,0 +1,125 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">#{msg['pesquisaDePredios']}</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa" target="_blank">
+
+			<h1>#{msg['pesquisaDePredios']}</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+
+				<p:toolbarGroup>
+					<p:commandButton value="#{msg['pesquisar']}"
+						icon="ui-icon-circle-zoomout" update="predioTable" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="#{msg['novo']}" outcome="/predio/novoPredio"
+						icon="ui-icon-plusthick" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<fieldset>
+				<p:focus context="painel" />
+				<p:panelGrid columns="2" id="painel" layout="grid"
+					style="margin-top: 20px" columnClasses="ui-grid-col-2"
+					styleClass="rotulo, campo">
+
+					<p:outputLabel value="#{msg['predio']}" for="descricao" />
+					<p:inputText id="descricao"
+						value="#{predioPesquisaController.filtro.descricao}" />
+				</p:panelGrid>
+			</fieldset>
+
+			<fieldset>
+				<p:dataTable id="predioTable" var="predio" lazy="true"
+					style="margin-top: 20px"
+					value="#{predioPesquisaController.model}"
+					emptyMessage="Nenhum dado encontrado." paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
+                            {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,20,30" paginator="true" scrollable="true"
+					rows="10">
+
+					<f:facet name="footer">
+						<div align="right">Foram encontrados
+							#{predioPesquisaController.qtdRegistros()} Registros.</div>
+					</f:facet>
+
+					<p:column headerText="Id">
+						<h:outputText value="#{predio.id}" />
+					</p:column>
+
+					<p:column headerText="Descrição">
+						<h:outputText value="#{predio.descricao}" />
+					</p:column>
+
+					<p:column headerText="Cep">
+						<h:outputText value="#{predio.cep}" />
+					</p:column>
+
+					<p:column headerText="Número">
+						<h:outputText value="#{predio.numero}" />
+					</p:column>
+
+					<p:column>
+
+						<p:commandButton icon="ui-icon-pencil" title="#{msg['editar']}"
+							update=":frmPesquisa:formEdicaoPredio:painel :frmPesquisa:idDialogEdicaoPredio :frmPesquisa:formEdicaoPredio"
+							oncomplete="PF('widgetVarDialogEdicaoPredio').show();">
+							<f:setPropertyActionListener value="#{predio}"
+								target="#{predioPesquisaController.predio}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash" title="#{msg['excluir']}"
+							oncomplete="PF('confirmacaoExclusao').show()" process="@this"
+							update=":frmPesquisa:confirmacaoExclusaoDialog">
+							<f:setPropertyActionListener
+								target="#{predioPesquisaController.predio}"
+								value="#{predio}" />
+						</p:commandButton>
+
+					</p:column>
+					
+					<p:column style="text-align: center">
+						<p:commandLink ajax="false"
+							action="#{predioPesquisaController.emitirRelatorioDePredios()}"
+							process="@this" update="predioTable" title="Pdf">
+							<f:setPropertyActionListener target="#{predioPesquisaController.id}"
+								value="#{predio.id}" />
+							<h:graphicImage library="images" name="pdf.png" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</fieldset>
+
+			<ui:include src="/dialogs/predio/EdicaoDialogPredio.xhtml" />
+
+			<p:confirmDialog header="#{msg['exclusaoPredio']}"
+				message="Tem certeza que deseja excluir o predio #{predioPesquisaController.predio.descricao}?"
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+				
+				<p:commandButton value="#{msg['sim']}"
+					oncomplete="PF('confirmacaoExclusao').hide();"
+					action="#{predioPesquisaController.excluir()}" process="@this"
+					update=":frmPesquisa:predioTable" />
+
+				<p:button value="#{msg['nao']}"
+					onclick="PF('confirmacaoExclusao').hide(); return false;" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

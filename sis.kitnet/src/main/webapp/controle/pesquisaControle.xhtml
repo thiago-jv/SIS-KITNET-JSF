@@ -1,0 +1,211 @@
+<ui:composition template="/template/layout.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">#{msg['pesquisaDeControles']}</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa" target="_blank">
+
+			<h1>#{msg['pesquisaDeControles']}</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+
+				<p:toolbarGroup>
+					<p:commandButton value="#{msg['pesquisar']}"
+						icon="ui-icon-circle-zoomout" update="controleTable" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="#{msg['novo']}" outcome="/controle/novoControle"
+						icon="ui-icon-plusthick" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<fieldset>
+				<p:focus context="painel" />
+				<p:panelGrid columns="2" id="painel" layout="grid"
+					style="margin-top: 20px" columnClasses="ui-grid-col-2"
+					styleClass="rotulo, campo">
+
+					<h:outputLabel
+						value="#{msg['sis.kitnet.controle.dataPagamentoDe']}:"
+						for="dataPagamentoDe" />
+					<p:calendar id="dataPagamentoDe" required="true"
+						requiredMessage="Dt. Pagamento De: campo obrigatório"
+						value="#{controlePesquisaController.filtro.dataPagamentoDe}"
+						pattern="dd/MM/yyyy" navigator="true" locale="pt_BR"
+						mindate="01/01/2019" mask="99/99/9999">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:calendar>
+
+					<h:outputLabel
+						value="#{msg['sis.kitnet.controle.dataPagamentoAte']}:"
+						for="dataPagamentoAte" />
+					<p:calendar mask="99/99/9999" id="dataPagamentoAte" required="true"
+						requiredMessage="Dt. Pagamento Ate: campo obrigatório"
+						value="#{controlePesquisaController.filtro.dataPagamentoAte}"
+						pattern="dd/MM/yyyy" navigator="true" locale="pt_BR"
+						mindate="01/01/2019">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</p:calendar>
+
+					<p:outputLabel value="#{msg['inquilino']}:" for="inquilino" />
+					<p:inputText id="inquilino" maxlength="90"
+						value="#{controlePesquisaController.filtro.inquilino}">
+					</p:inputText>
+
+					<p:outputLabel value="#{msg['apartamento']}:" for="apartamento" />
+					<p:selectOneMenu id="apartamento" style="width:23%"
+						value="#{controlePesquisaController.filtro.apartamento}">
+						<f:selectItem itemLabel="Selecione um AP" />
+						<f:selectItems
+							value="#{controlePesquisaController.listarApartamentos()}"
+							var="apartamento" itemValue="#{apartamento.numero}"
+							itemLabel="#{apartamento.numero}" />
+					</p:selectOneMenu>
+
+
+					<p:outputLabel value="#{msg['valor']}:" for="valor" />
+					<p:selectOneMenu id="valor" style="width:23%" required="true"
+						requiredMessage="Valor: campo obrigatório"
+						value="#{controlePesquisaController.filtro.valor}">
+						<f:selectItems
+							value="#{controlePesquisaController.listarValores()}" var="valor"
+							itemValue="#{valor.valor}" itemLabel="#{valor.valor}" />
+					</p:selectOneMenu>
+
+					<p:outputLabel value="#{msg['sis.kitnet.controle.status']}:"
+						for="status" />
+					<p:inputText id="status"
+						value="#{controlePesquisaController.filtro.statusProximoPagamento}"
+						maxlength="8">
+					</p:inputText>
+
+				</p:panelGrid>
+			</fieldset>
+
+			<fieldset>
+				<p:dataTable id="controleTable" var="controle" lazy="true"
+					style="margin-top: 20px"
+					value="#{controlePesquisaController.model}"
+					emptyMessage="Nenhum dado encontrado." paginatorPosition="bottom"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} 
+                            {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="10,20,30" paginator="true" scrollable="true"
+					rows="10">
+
+					<f:facet name="footer">
+						<div align="right">Foram encontrados
+							#{controlePesquisaController.qtdRegistros()} Registros.</div>
+					</f:facet>
+
+					<p:column headerText="Id">
+						<h:outputText value="#{controle.id}" />
+					</p:column>
+
+					<p:column headerText="Dt. Entrada">
+						<h:outputText value="#{controle.dataEntrada}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Dt. Pagamento">
+						<h:outputText value="#{controle.dataPagamento}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Inquilino">
+						<h:outputText value="#{controle.inquilino.nome}" />
+					</p:column>
+
+					<p:column headerText="Apartamento">
+						<h:outputText value="#{controle.apartamento.numero}" />
+					</p:column>
+
+					<p:column headerText="Valor">
+						<h:outputText value="#{controle.valor.valor}" />
+					</p:column>
+
+					<p:column headerText="Status Prox. Pg">
+						<h:outputText value="#{controle.statusProximoPagamento}" />
+					</p:column>
+
+					<p:column headerText="Status Controle">
+						<h:outputText value="#{controle.statusControle}" />
+					</p:column>
+
+					<p:column style="width: 140px">
+
+						<p:button icon="ui-icon-pencil" title="#{msg['editar']}"
+							outcome="/controle/novoControle">
+							<f:param name="controle" value="#{controle.id}" />
+						</p:button>
+
+						<p:commandButton icon="ui-icon-clipboard" title="Status Prox. Pg"
+							update=":frmPesquisa:formEdicaoControle:painel :frmPesquisa:idDialogEdicaoControle :frmPesquisa:formEdicaoControle"
+							oncomplete="PF('widgetVarDialogEdicaoControle').show();">
+							<f:setPropertyActionListener value="#{controle}"
+								target="#{controlePesquisaController.controle}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-script" title="Status Controle"
+							update=":frmPesquisa:formEdicaoControleFechamento:painel :frmPesquisa:idDialogEdicaoControleFechamento :frmPesquisa:formEdicaoControleFechamento"
+							oncomplete="PF('widgetVarDialogEdicaoControleFechamento').show();">
+							<f:setPropertyActionListener value="#{controle}"
+								target="#{controlePesquisaController.controle}" />
+						</p:commandButton>
+
+						<p:commandButton icon="ui-icon-trash" title="Excluir"
+							oncomplete="PF('confirmacaoExclusao').show()" process="@this"
+							update=":frmPesquisa:confirmacaoExclusaoDialog">
+							<f:setPropertyActionListener
+								target="#{controlePesquisaController.controle}"
+								value="#{controle}" />
+						</p:commandButton>
+						
+					</p:column>
+
+					<p:column style="text-align: center" width="100px"
+						headerText="Recibo">
+						<p:commandLink ajax="false"
+							action="#{controlePesquisaController.emitirRelatorioDeControle()}"
+							process="@this" update="controleTable" title="Recibo">
+							<f:setPropertyActionListener
+								target="#{controlePesquisaController.id}" value="#{controle.id}" />
+							<h:graphicImage library="images" name="pdf.png" />
+						</p:commandLink>
+					</p:column>
+
+				</p:dataTable>
+			</fieldset>
+
+			<ui:include
+				src="/dialogs/controle/EdicaoDialogStatusPagamentoControle.xhtml" />
+
+			<ui:include
+				src="/dialogs/controle/EdicaoDialogStatusFechadoPagamentoControle.xhtml" />
+
+			<p:confirmDialog header="Exclusão de Controle"
+				message="Tem certeza que deseja excluir o Controle #{controlePesquisaController.controle.id}?"
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+				<p:button value="Não"
+					onclick="PF('confirmacaoExclusao').hide(); return false;" />
+				<p:commandButton value="Sim"
+					oncomplete="PF('confirmacaoExclusao').hide();"
+					action="#{controlePesquisaController.excluir()}" process="@this"
+					update=":frmPesquisa:controleTable" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<ui:insert name="metadata" />
+
+<h:head>
+
+	<f:facet name="first">
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	</f:facet>
+
+	<title><ui:insert name="titulo">#{msg['sistema']}</ui:insert></title>
+	<h:outputStylesheet library="css" name="sistema.css" />
+
+</h:head>
+
+<h:body>
+
+	<p:ajaxStatus id="ajaxStatus" onstart="PF('statusDialog').show();"
+		onsuccess="PF('statusDialog').hide();" styleClass="ajax-status" />
+
+	<p:dialog id="dialogAjaxStatus" modal="true" widgetVar="statusDialog"
+		height="200px;" width="200px;" header="Processando"
+		footer="Aguarde..." draggable="false" appendTo="@(body)"
+		dynamic="false" resizable="false" closable="false">
+		<h:graphicImage library="images" name="ajax-loader.gif"
+			id="imgAjaxLoader" styleClass="bordaImagem" />
+	</p:dialog>
+
+	<header>
+
+		<h:form>
+			<p:menubar>
+
+				<p:submenu label="Parametrização">
+					<p:menuitem value="#{msg['novo']}"
+						outcome="/parametrizacao/novoParametrizacao.xhtml"
+						icon="ui-icon-plusthick" />
+					<p:menuitem value="#{msg['pesquisar']}"
+						outcome="/parametrizacao/pesquisaParametrizacao.xhtml"
+						icon="ui-icon-search" />
+				</p:submenu>
+
+
+				<p:submenu label="Inquilino">
+					<p:menuitem value="#{msg['novo']}"
+						outcome="/inquilino/novoInquilino.xhtml" icon="ui-icon-plusthick" />
+					<p:menuitem value="#{msg['pesquisar']}"
+						outcome="/inquilino/pesquisaInquilino.xhtml" icon="ui-icon-search" />
+				</p:submenu>
+
+				<p:submenu label="Predio">
+					<p:menuitem value="#{msg['novo']}"
+						outcome="/predio/novoPredio.xhtml" icon="ui-icon-plusthick" />
+					<p:menuitem value="#{msg['pesquisar']}"
+						outcome="/predio/pesquisaPredio.xhtml" icon="ui-icon-search" />
+				</p:submenu>
+
+				<p:submenu label="Valor">
+					<p:menuitem value="#{msg['novo']}" outcome="/valor/novoValor.xhtml"
+						icon="ui-icon-plusthick" />
+					<p:menuitem value="#{msg['pesquisar']}"
+						outcome="/valor/pesquisaValor.xhtml" icon="ui-icon-search" />
+				</p:submenu>
+
+				<p:submenu label="Apartamento">
+					<p:menuitem value="#{msg['novo']}"
+						outcome="/apartamento/novoApartamento.xhtml"
+						icon="ui-icon-plusthick" />
+					<p:menuitem value="#{msg['pesquisar']}"
+						outcome="/apartamento/pesquisaApartamento.xhtml"
+						icon="ui-icon-search" />
+				</p:submenu>
+
+				<p:submenu label="Controle">
+					<p:menuitem value="#{msg['novo']}"
+						outcome="/controle/novoControle.xhtml" icon="ui-icon-plusthick" />
+					<p:menuitem value="#{msg['pesquisar']}"
+						outcome="/controle/pesquisaControle.xhtml" icon="ui-icon-search" />
+				</p:submenu>
+
+				<p:menuitem value="Sair" url="/j_spring_security_logout"
+					style="width: 100%;" />
+
+			</p:menubar>
+
+		</h:form>
+
+		<div style="clear: both"></div>
+	</header>
+
+	<ui:insert name="corpo" />
+	
+	<div class="rodape">
+		<strong>Bem vindo ao sistema: </strong>
+			<p:outputLabel id="usuario-logado" value="#{seguranca.nomeUsuario}" />
+	</div>
+	
+
+	<h:outputScript library="js" name="calendar.js" />
+	<h:outputScript library="js" name="jquery.maskMoney.js" />
+
+</h:body>
+
+</html>
