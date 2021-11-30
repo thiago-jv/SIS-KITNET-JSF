@@ -9,7 +9,7 @@ Instalar e configurar o java, caso não esteja segue o link [java](https://mediu
 
 # Estrutura do projeto
 
-![Estrutura do Projeto]
+![Estrutura do Projeto](https://github.com/thiago-jv/SIS-KITNET-JSF/blob/main/estrutura.png)
 
 # Tecnologias utilizadas e outros
 
