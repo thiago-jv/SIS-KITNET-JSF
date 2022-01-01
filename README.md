@@ -22,7 +22,7 @@ Instalar e configurar o java, caso não esteja segue o link [java](https://mediu
 ![Recibo](https://github.com/thiago-jv/SIS-KITNET-JSF/blob/main/recibo.png)
 
 
-# Acesso ao banco PostgreSQL / Mysql / Oracle
+# Acesso ao banco PostgreSQL / Oracle
 
 ![PostgreSql]()
 
