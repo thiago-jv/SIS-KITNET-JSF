@@ -22,30 +22,8 @@ Instalar e configurar o java, caso não esteja segue o link [java](https://mediu
 ![Recibo](https://github.com/thiago-jv/SIS-KITNET-JSF/blob/main/recibo.png)
 
 
-# Tecnologias utilizadas e outros
-
- 
- 1- Java 8 [Sobre](https://www.java.com/pt-BR/download/help/java8_pt-br.html)
- 2- Maven 3.6.3 [Sobre](https://www.dclick.com.br/2010/09/15/o-que-e-o-maven-e-seus-primeiros-passos-com-a-ferramenta/)
- 3- PostgreSQL 9.6 [Sobre](https://www.postgresql.org/about/)
- 
- 
-
-# Proceso para rodar o projeto
-```
-1-
-2-
-3- Entrar dentro da pasta do projeto sis.apartamentos.com.br
-4- mvn dependency:resolve
-5- mvn dependency:tree
-6- mvn package
-7- mvn spring-boot:run
-```
-
 # Acesso ao banco PostgreSQL / Mysql / Oracle
 
 ![PostgreSql]()
-
-![Mysql]()
 
 ![OracleSQL]()
