@@ -1,4 +1,4 @@
-Projeto demonstrativo para controle de kitnets, utilizando Java 8, SpringSecurity, Hibernate/JPA, PostgreSQL, Oracle, Mysql, Maven, Design Patterns, Clean Code, JSF2, 
+Projeto demonstrativo para controle de kitnets, utilizando Java 8, SpringSecurity, Hibernate/JPA, PostgreSQL, Oracle, Maven, Design Patterns, Clean Code, JSF2, 
 Primefaces 6.2, JavaMail e Ireport.
 
 # Pré-requisitos
