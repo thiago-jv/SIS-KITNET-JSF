@@ -1,4 +1,4 @@
-Projeto demonstrativo para controle de kitnets, utilizando Java 8, SpringSecurity, Hibernate/JPA, PostgreSQL, Oracle, Maven, Design Patterns, Clean Code, JSF2, 
+Projeto demonstrativo para controle de kitnets, utilizando Java 8, SpringSecurity, Hibernate/JPA, PostgreSQL, Maven, Design Patterns, Clean Code, JSF2, 
 Primefaces 6.2, JavaMail e Ireport.
 
 # Pré-requisitos
@@ -25,5 +25,3 @@ Instalar e configurar o java, caso não esteja segue o link [java](https://mediu
 # Acesso ao banco PostgreSQL / Oracle
 
 ![PostgreSql]()
-
-![OracleSQL]()
